@@ -2,7 +2,6 @@ package my.log.analyzer;
 /**
  * 
  * A model class containing the successful requests number, error requests number, response time and return size in the minute.
- * 
  * @author Jinge Dai
  *
  */

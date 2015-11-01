@@ -1,16 +1,12 @@
 package my.log.analyzer;
 import java.io.File;
 import java.net.URL;
-
-import my.log.analyzer.AccessLogParser;
-
 import org.junit.Before;
 import org.junit.Test;
 
 
 /**
  * Test class for {@link AccessLogParser}.
- * 
  * @author Jiinge Dai
  *
  */

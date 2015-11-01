@@ -5,7 +5,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,8 +14,6 @@ import java.util.Scanner;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.naming.ldap.SortKey;
 
 /**
  * A process to read an access log file and analyze the access records per minute.
@@ -40,6 +37,9 @@ public class AccessLogParser {
 	
 	/** The date format of the access time stamp */
 	private static final String ACCESS_DATE_FORMAT = "dd/MMM/yyyy:hh:mm:ss Z";
+	
+	/** The date format of the displayed time stamp */
+	private static final String DISPLAY_DATE_FORMAT = "dd/MMM/yyyy:hh:mm Z";
 
 	/** The first position of the SECOND section in the time stamp */
 	private static int INDEX_SECONED = 18;
@@ -77,10 +77,10 @@ public class AccessLogParser {
 	 */
 	public void showResult() {
 		for(Date timestamp: sortMap()){
-			DateFormat df = new SimpleDateFormat(ACCESS_DATE_FORMAT);
+			DateFormat df = new SimpleDateFormat(DISPLAY_DATE_FORMAT);
 			df.setTimeZone(TimeZone.getTimeZone("UTC+0100"));
 			AccessRecord record = this.recordMap.get(timestamp);
-			System.out.println(new SimpleDateFormat(ACCESS_DATE_FORMAT)
+			System.out.println(new SimpleDateFormat(DISPLAY_DATE_FORMAT)
 					.format(timestamp));
 			System.out.println("Number of successful request per minute: "
 					+ record.getNumSuccess());
@@ -123,8 +123,8 @@ public class AccessLogParser {
 			double returnSize = Double.valueOf(returnSizeString) / 1024 / 1024;
 			record.setReturnSize(record.getReturnSize() + returnSize);
 		} catch (NumberFormatException e) {
-			System.out.println("Cannot conver the retrun size ["
-					+ returnSizeString + "] to a number.");
+			// TODO use slf4j to log in warn level
+			//System.out.println("Cannot conver the retrun size ["+ returnSizeString + "] to a number.");
 		}
 
 		long responseTime = Integer.valueOf(lineComponets[length - 1]);
