@@ -15,8 +15,8 @@ Note: Please modify the command above to point to the correct path of the "acces
 
 Expected Result
 --------
-The application will read the log file and display the requests information in time order. The displayed requests are converted 
-to UTC +0100 time zone to keep consistent. 
+The application will read the log file and display the requests information in time order. The requests timestamp are 
+converted to minute level and in UTC +0100 time zone to keep consistent. 
 
 Example:
 30/Mar/2015:10:11 +0100

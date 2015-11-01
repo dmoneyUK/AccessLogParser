@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,9 +36,6 @@ public class AccessLogParser {
 	
 	/** The date format of the access time stamp */
 	private static final String ACCESS_DATE_FORMAT = "dd/MMM/yyyy:hh:mm:ss Z";
-	
-	/** The date format of the displayed time stamp */
-	private static final String DISPLAY_DATE_FORMAT = "dd/MMM/yyyy:hh:mm Z";
 
 	/** The first position of the SECOND section in the time stamp */
 	private static int INDEX_SECONED = 18;
@@ -67,30 +63,12 @@ public class AccessLogParser {
 	}
 	
 	/**
-	 * Shows the final results in time order:
-	 * <ul>
-	 * <li>Number of successful request per minute</li>
-	 * <li>Number of error request per minute</li>
-	 * <li>Mean response time per minute</li>
-	 * <li>MBs sent per minute</li>
-	 * </ul>
+	 * 
+	 * @return {@link #recordMap}
 	 */
-	public void showResult() {
-		for(Date timestamp: sortMap()){
-			DateFormat df = new SimpleDateFormat(DISPLAY_DATE_FORMAT);
-			df.setTimeZone(TimeZone.getTimeZone("UTC+0100"));
-			AccessRecord record = this.recordMap.get(timestamp);
-			System.out.println(new SimpleDateFormat(DISPLAY_DATE_FORMAT)
-					.format(timestamp));
-			System.out.println("Number of successful request per minute: "
-					+ record.getNumSuccess());
-			System.out.println("Number of error request per minute: "
-					+ record.getNumError());
-			System.out.println("Mean response time per minute: "
-					+ record.getResponseTime());
-			System.out
-					.println("MBs sent per minute: " + record.getReturnSize());
-		}
+	public Map<Date, AccessRecord> getRecordMap(){
+		return this.recordMap;
+		
 	}
 
 	/**
@@ -154,7 +132,6 @@ public class AccessLogParser {
 		Date date = null;
 		try {
 			DateFormat df = new SimpleDateFormat(ACCESS_DATE_FORMAT);
-			//df.setTimeZone(TimeZone.getTimeZone("UTC"));
 			date = df.parse(timestamp);
 		} catch (ParseException e) {
 			System.out.println("Error when parsing time stamp");
@@ -163,10 +140,10 @@ public class AccessLogParser {
 	}
 	
 	/**
-	 * Sorts the keys of the {@link #recordMap}.
+	 * Sorts the keys of the {@link #recordMap} in time order.
 	 * @return the sorted keys
 	 */
-	private List<Date> sortMap(){
+	public List<Date> sortMapKeys(){
 		List<Date> keyList = new ArrayList<Date>(this.recordMap.keySet());
 		Collections.sort(keyList);
 		return keyList;
