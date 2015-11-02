@@ -39,6 +39,9 @@ public class UserInterfaceTest {
 		this.userInterface = new UserInterface();
 	}
 
+	/**
+	 * Tests {@link UserInterface#showResult(AccessLogParser)}.
+	 */
 	@Test
 	public void testShowResult() {
 		Map<Date, AccessRecord> recordMap = TestUtils

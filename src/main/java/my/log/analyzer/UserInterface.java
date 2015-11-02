@@ -73,9 +73,9 @@ public class UserInterface {
 	}
 
 	/**
-	 * Prints the give message.
+	 * Shows the give message to the standard output.
 	 * 
-	 * @param message
+	 * @param message the content to be displayed
 	 */
 	public void showMessage(String message) {
 		System.out.println(message);

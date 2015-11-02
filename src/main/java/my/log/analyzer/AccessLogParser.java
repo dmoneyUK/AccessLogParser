@@ -48,7 +48,7 @@ public class AccessLogParser {
 	/**
 	 * Reads a log file line by line and extract the access information.
 	 * 
-	 * @param file the file to read from.
+	 * @param filePath the file to read from.
 	 */
 	public void processFile(String filePath) {
 		File file = null;
@@ -72,8 +72,8 @@ public class AccessLogParser {
 	}
 	
 	/**
-	 * 
-	 * @return {@link #recordMap}
+	 * Gets the {@link #recordMap} conataining all the access records.
+	 * @return {@link #recordMap} contaning the access records.
 	 */
 	public Map<Date, AccessRecord> getRecordMap(){
 		return this.recordMap;
