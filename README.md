@@ -36,15 +36,34 @@ converted to minute level and in UTC +0100 time zone to keep consistent.
     Mean response time per minute: 410190486
     MBs sent per minute: 12.786433219909668
 
-Logs
+TroubleShooting
 ========
-This application uses slf4j and logback. By default, the log is in INFO level. You can also change the log level by define your own
-logback.xml file.
+If you get any error when using the application, you can change the log level to get more information. This application uses slf4j and logback. By default, the log is in INFO level. You can also change the log level by define your own logback.xml file.
 If you want to use your own logback.xml file, use the command below:
 ```
     java -Dlogback.configurationFile=./logback.xml LogAnalyzer-1.0.0-jar-with-dependencies.jar access.log
     or
     java -Dlogback.configurationFile=./logback.xml LogAnalyzer-1.0.0-jar-with-dependencies.jar
 ````
+####SAMPLE logback.xml
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- Strictly speaking, the level attribute is not necessary since -->
+	<!-- the level of the root level is set to DEBUG by default. -->
+	<root level="DEBUG">
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>
+```
+
 
 
