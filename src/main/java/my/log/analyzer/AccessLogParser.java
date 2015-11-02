@@ -14,12 +14,18 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * A process to read an access log file and analyze the access records per minute.
  * @author Jinge Dai
  *
  */
 public class AccessLogParser {
+	
+	/** The logger. */
+	private static Logger LOGGER = LoggerFactory.getLogger(AccessLogParser.class);
 
 	/**
 	 * A map containing the access information of every minute. The key is the time stamp in 
@@ -57,6 +63,7 @@ public class AccessLogParser {
 			}
 
 		} catch (FileNotFoundException e) {
+			LOGGER.error("Error happened when reading file: {}", file.getName());
 			System.out.println("Error happened when reading file: "
 					+ file.getName());
 		}
@@ -89,7 +96,9 @@ public class AccessLogParser {
 
 		String[] lineComponets = line.split(" ");
 		int length = lineComponets.length;
+		
 		String responseStatus = lineComponets[length - 3];
+
 		if (responseStatus.matches(GOOD_HTTP_RESPONSE_STATUS_FORMAT)) {
 			record.setNumSuccess(record.getNumSuccess() + 1);
 		} else {
@@ -101,13 +110,16 @@ public class AccessLogParser {
 			double returnSize = Double.valueOf(returnSizeString) / 1024 / 1024;
 			record.setReturnSize(record.getReturnSize() + returnSize);
 		} catch (NumberFormatException e) {
-			// TODO use slf4j to log in warn level
-			//System.out.println("Cannot conver the retrun size ["+ returnSizeString + "] to a number.");
+			LOGGER.warn("Cannot conver the retrun size [{}].", returnSizeString);
 		}
 
-		long responseTime = Integer.valueOf(lineComponets[length - 1]);
-		record.setResponseTime(record.getResponseTime() + responseTime);
-
+		String responseTimeString =lineComponets[length - 1];
+		try{
+			long responseTime = Integer.valueOf(responseTimeString);
+			record.setResponseTime(record.getResponseTime() + responseTime);
+		} catch (NumberFormatException e) {
+			LOGGER.warn("Cannot conver the response time [{}].", responseTimeString);
+		}
 		this.recordMap.put(timestamp, record);
 
 	}
@@ -134,7 +146,7 @@ public class AccessLogParser {
 			DateFormat df = new SimpleDateFormat(ACCESS_DATE_FORMAT);
 			date = df.parse(timestamp);
 		} catch (ParseException e) {
-			System.out.println("Error when parsing time stamp");
+			LOGGER.error("Error when parsing time stamp: [{}]",timestamp);
 		}
 		return date;
 	}

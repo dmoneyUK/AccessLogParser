@@ -86,7 +86,6 @@ public class AccessLogParserTest {
 		Assert.assertEquals(numError, record.getNumError());
 		Assert.assertEquals(responseTime, record.getResponseTime());
 		Assert.assertEquals(returnSize, record.getReturnSize(),0);	
-		
 	}
 	
 	
