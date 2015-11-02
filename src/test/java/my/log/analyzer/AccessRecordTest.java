@@ -10,21 +10,7 @@ import org.junit.Test;
  * @author Jinge Dai
  *
  */
-public class AccessRecordTest {
-	
-	/** A samples of successful request number */
-	private final int SAMPLE_SUCCESS_NUM = 10;
-	
-	/** A samples of error request number */
-	private final int SAMPLE_ERROR_NUM = 1;
-
-	/** A samples of return size in megabyte */
-	private final double SAMPLE_RETURN_SIZE = 1.1;
-	
-	/** A samples of the response time */
-	private final long SAMPLE_RESPONSE_TIME=1000;
-	
-	
+public class AccessRecordTest {	
 
 	/** The {@link AccessRecord} under test. */
 	private AccessRecord record;
@@ -34,11 +20,11 @@ public class AccessRecordTest {
 	 */
 	@Test
 	public void testAccessRecord(){
-		this.record = new AccessRecord(SAMPLE_SUCCESS_NUM, SAMPLE_ERROR_NUM, SAMPLE_RETURN_SIZE, SAMPLE_RESPONSE_TIME);
-		Assert.assertEquals(SAMPLE_SUCCESS_NUM, this.record.getNumSuccess());
-		Assert.assertEquals(SAMPLE_ERROR_NUM, this.record.getNumError());
-		Assert.assertEquals(SAMPLE_RETURN_SIZE, this.record.getReturnSize(),0);
-		Assert.assertEquals(SAMPLE_RESPONSE_TIME, this.record.getResponseTime());
+		this.record = new AccessRecord(TestUtils.SAMPLE_SUCCESS_NUM[0], TestUtils.SAMPLE_ERROR_NUM[0], TestUtils.SAMPLE_RETURN_SIZE[0], TestUtils.SAMPLE_RESPONSE_TIME[0]);
+		Assert.assertEquals(TestUtils.SAMPLE_SUCCESS_NUM[0], this.record.getNumSuccess());
+		Assert.assertEquals(TestUtils.SAMPLE_ERROR_NUM[0], this.record.getNumError());
+		Assert.assertEquals(TestUtils.SAMPLE_RETURN_SIZE[0], this.record.getReturnSize(),0);
+		Assert.assertEquals(TestUtils.SAMPLE_RESPONSE_TIME[0], this.record.getResponseTime());
 	}
 	
 	/**
@@ -47,8 +33,8 @@ public class AccessRecordTest {
 	@Test
 	public void testSetNumSuccess(){
 		this.record = new AccessRecord(0,0,0,0);
-		this.record.setNumSuccess(SAMPLE_SUCCESS_NUM);
-		Assert.assertEquals(SAMPLE_SUCCESS_NUM, this.record.getNumSuccess());
+		this.record.setNumSuccess(TestUtils.SAMPLE_SUCCESS_NUM[0]);
+		Assert.assertEquals(TestUtils.SAMPLE_SUCCESS_NUM[0], this.record.getNumSuccess());
 	}
 	
 	/**
@@ -57,8 +43,8 @@ public class AccessRecordTest {
 	@Test
 	public void testSetNumError(){
 		this.record = new AccessRecord(0,0,0,0);
-		this.record.setNumError(SAMPLE_ERROR_NUM);
-		Assert.assertEquals(SAMPLE_ERROR_NUM, this.record.getNumError());
+		this.record.setNumError(TestUtils.SAMPLE_ERROR_NUM[0]);
+		Assert.assertEquals(TestUtils.SAMPLE_ERROR_NUM[0], this.record.getNumError());
 	}
 	
 	/**
@@ -67,8 +53,8 @@ public class AccessRecordTest {
 	@Test
 	public void testSetReturnSize(){
 		this.record = new AccessRecord(0,0,0,0);
-		this.record.setReturnSize(SAMPLE_RETURN_SIZE);
-		Assert.assertEquals(SAMPLE_RETURN_SIZE, this.record.getReturnSize(),0);
+		this.record.setReturnSize(TestUtils.SAMPLE_RETURN_SIZE[0]);
+		Assert.assertEquals(TestUtils.SAMPLE_RETURN_SIZE[0], this.record.getReturnSize(),0);
 	}
 	
 	/**
@@ -77,7 +63,7 @@ public class AccessRecordTest {
 	@Test
 	public void testSetResponseTime(){
 		this.record = new AccessRecord(0,0,0,0);
-		this.record.setResponseTime(SAMPLE_RESPONSE_TIME);
-		Assert.assertEquals(SAMPLE_RESPONSE_TIME, this.record.getResponseTime());
+		this.record.setResponseTime(TestUtils.SAMPLE_RESPONSE_TIME[0]);
+		Assert.assertEquals(TestUtils.SAMPLE_RESPONSE_TIME[0], this.record.getResponseTime());
 	}
 }

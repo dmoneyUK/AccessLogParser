@@ -1,56 +1,50 @@
 package my.log.analyzer;
-import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
-import java.util.TimeZone;
 
 /**
- * A java applicaiton which can read a given access log file and print the successful request number per minute, error request number per minute, mean response time per minute and the MBs sent per minutes to the standard output.
+ * A java applicaiton which can read a given access log file and print the
+ * successful request number per minute, error request number per minute, mean
+ * response time per minute and the MBs sent per minutes to the standard output.
+ * 
  * @author Jinge Dai
  *
  */
 public class Solution {
+
+	private static AccessLogParser parser = new AccessLogParser();
+	private static UserInterface ui = new UserInterface(); 
 	
-	/** The date format of the displayed time stamp */
-	private static final String DISPLAY_DATE_FORMAT = "dd/MMM/yyyy:hh:mm Z";
-	
-	public static void main(String[] args){
-		
-		AccessLogParser parser = new AccessLogParser();
-		File file = new File(args[0]);
-		System.out.println("Procesing log file... Please wait.");
-		parser.processFile(file);
-		Solution.showResult(parser);
+	public static void main(String[] args) {
+
+		String filePath = null;
+		if (args.length == 0) {
+			ui.showMessage("######## LogAnalyzer Start ########");
+			ui.showMessage("Please give a correct path the log file to be analyze: ");
+			filePath = ui.readUserInput();
+		}else{
+			filePath = args[0];
+		}
+		analzeFile(filePath);
+		ui.showResult(parser);
+		ui.showMessage("######## LogAnalyzer Complete ########");
 	}
 	
 	/**
-	 * Shows the final results in time order:
-	 * <ul>
-	 * <li>Number of successful request per minute</li>
-	 * <li>Number of error request per minute</li>
-	 * <li>Mean response time per minute</li>
-	 * <li>MBs sent per minute</li>
-	 * </ul>
+	 * Analyze the given file. If an {@link RecoverableException} happened, a message will notify the user to restart.
+	 * @param filePath the file to be analyzed.
 	 */
-	private static void showResult(AccessLogParser parser) {
-		Map<Date, AccessRecord> recordMap =parser.getRecordMap();
-		for(Date timestamp: parser.sortMapKeys()){
-			DateFormat df = new SimpleDateFormat(DISPLAY_DATE_FORMAT);
-			df.setTimeZone(TimeZone.getTimeZone("UTC+0100"));
-			AccessRecord record = recordMap.get(timestamp);
-			System.out.println(new SimpleDateFormat(DISPLAY_DATE_FORMAT)
-					.format(timestamp));
-			System.out.println("Number of successful request per minute: "
-					+ record.getNumSuccess());
-			System.out.println("Number of error request per minute: "
-					+ record.getNumError());
-			System.out.println("Mean response time per minute: "
-					+ record.getResponseTime());
-			System.out
-					.println("MBs sent per minute: " + record.getReturnSize());
+	private static void analzeFile(String filePath){
+		try {
+			parser.processFile(filePath);
+		} catch (RecoverableException recEx) {
+			ui.showMessage(recEx.getMessage()
+					+ " Please check the README.md and try again.");
+			String newFilePath = ui.readUserInput();
+			analzeFile(newFilePath);
+		} catch (Exception e) {
+			ui.showMessage("Sorry! We have a technical problem now. The application is terminated.");
 		}
 	}
+
+
 
 }

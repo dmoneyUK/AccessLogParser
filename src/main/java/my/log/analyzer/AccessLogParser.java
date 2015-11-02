@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 /**
  * A process to read an access log file and analyze the access records per minute.
  * @author Jinge Dai
@@ -51,12 +50,16 @@ public class AccessLogParser {
 	 * 
 	 * @param file the file to read from.
 	 */
-	public void processFile(File file) {
-		this.recordMap = new HashMap<Date, AccessRecord>();
-		String line = null;
-		Scanner sc;
+	public void processFile(String filePath) {
+		File file = null;
 		try {
-			sc = new Scanner(file);
+			file = new File(filePath);
+			System.out.println("Procesing log file... Please wait.");
+		
+			this.recordMap = new HashMap<Date, AccessRecord>();
+			String line = null;
+
+			Scanner sc = new Scanner(file);
 			while (sc.hasNextLine()) {
 				line = sc.nextLine();
 				parseLine(line);
@@ -64,8 +67,7 @@ public class AccessLogParser {
 
 		} catch (FileNotFoundException e) {
 			LOGGER.error("Error happened when reading file: {}", file.getName());
-			System.out.println("Error happened when reading file: "
-					+ file.getName());
+			throw new RecoverableException("Error happened when reading file: "+file.getName()+".", e);
 		}
 	}
 	
@@ -110,7 +112,7 @@ public class AccessLogParser {
 			double returnSize = Double.valueOf(returnSizeString) / 1024 / 1024;
 			record.setReturnSize(record.getReturnSize() + returnSize);
 		} catch (NumberFormatException e) {
-			LOGGER.warn("Cannot conver the retrun size [{}].", returnSizeString);
+			LOGGER.debug("Cannot conver the retrun size [{}].", returnSizeString);
 		}
 
 		String responseTimeString =lineComponets[length - 1];
